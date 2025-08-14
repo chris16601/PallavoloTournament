@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,3 +33,8 @@ Route::get('/squadre', function () {
 Route::get('/log', function () {
     return view('log');
 });
+
+
+
+//API
+Route::get('/api/teams', [ApiController::class, 'getTeams']);
