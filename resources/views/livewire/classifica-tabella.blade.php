@@ -10,8 +10,8 @@
                                     <option value="{{ $girone->id_girone }}">GIRONE {{ $girone->nome }}</option>
                                 @endforeach
                             </select>
-                        @else
-                            <a href=""><button class="btn btn-secondary"><i class="fas fa-volleyball fa-lg"></i> CREA CAMPIONATO</button></a>
+                        @elseif ($squadre != null)
+                            <a wire:click="creaGironi"><button class="btn btn-secondary"><i class="fas fa-volleyball fa-lg"></i> CREA CAMPIONATO</button></a>
                         @endif
                     </div>
                     <div class="col-lg-12">
@@ -33,7 +33,7 @@
                                 </thead>
                                 <tbody class="text-center">
                                     @php
-                                        $number = 0;   
+                                        $number = 0;
                                     @endphp
                                     @foreach ($squadre as $squadra)
                                         <tr>
@@ -59,5 +59,5 @@
                 </div>
             </div>
         </section>
-    </div>    
+    </div>
 </div>

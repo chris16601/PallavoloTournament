@@ -29,15 +29,33 @@ class Navbar extends Component
     public function mount()
     {
         $this->check_creazione = DB::table('squadre')
-            ->select(DB::raw('CASE WHEN COUNT(*) = SUM(CASE WHEN id_girone IS NULL THEN 1 ELSE 0 END) THEN "true" ELSE "false" END AS risultato'))
+            ->select(DB::raw('CASE WHEN COUNT(*) = SUM(CASE WHEN id_girone IS NULL THEN 1 ELSE 0 END) THEN "false" ELSE "true" END AS risultato'))
             ->first();
     }
 
     public function creaGironi()
     {
+        $squadre = [];
         $gironi = Girone::all();
         $numero_gironi = $gironi->count();
         $squadre = Squadra::all();
+
+        $n = 0;
+        if (empty($squadre->items)) {
+            for ($i = 0; $i <=20 ; $i++) {
+                $squadra = new Squadra();
+
+                //$squadra->id_girone = $girone->id_girone;
+                $squadra->nome = 'Squadra_' . $n;
+                $squadra->citta = 'Unknown';
+                $squadra->punteggio = 0;
+
+                $squadra->save();
+                $n++;
+            }
+            $squadre = Squadra::all();
+        }
+
         $numero_squadre = $squadre->count();
 
         $squadre_per_girone = floor($numero_squadre / $numero_gironi);
@@ -46,6 +64,7 @@ class Navbar extends Component
         $gironi = $gironi->shuffle(); // Mescola l'ordine dei gironi
 
         $index = 0;
+
         foreach ($squadre as $squadra) {
             $girone_corrente = $gironi[$index % $numero_gironi];
             $squadra->id_girone = $girone_corrente->id_girone;
